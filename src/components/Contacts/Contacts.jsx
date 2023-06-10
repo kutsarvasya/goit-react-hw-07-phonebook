@@ -2,21 +2,26 @@
 
 import { Item, List } from './Contacts.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { useMemo } from 'react';
-import { actions } from 'store/contacts/ContactsSlice';
+import { useEffect, useMemo } from 'react';
+import { getContactsThunk } from 'store/contacts/getContactsThunk';
+import { deleteContactsThunk } from 'store/contacts/deleteContact';
 
 export function Contacts() {
-  const contacts = useSelector(state => state.contacts.items);
+  const { items } = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
+
   const filteredContacts = useMemo(() => {
-    if (!filter) return contacts;
+    if (!filter) return items;
     const normalizedFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
+    return items.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
-  }, [filter, contacts]);
+  }, [filter, items]);
 
   return (
     <>
@@ -26,7 +31,7 @@ export function Contacts() {
             <p>
               {contact.name}: {contact.number}
             </p>
-            <button onClick={() => dispatch(actions.remove(contact.id))}>
+            <button onClick={() => dispatch(deleteContactsThunk(contact.id))}>
               Удалить
             </button>
           </Item>
