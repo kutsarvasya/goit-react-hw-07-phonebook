@@ -7,10 +7,13 @@ import { getContactsThunk } from 'store/contacts/getContactsThunk';
 import { deleteContactsThunk } from 'store/contacts/deleteContact';
 
 export function Contacts() {
-  const { items } = useSelector(state => state.contacts.contacts);
+  const { items, isLoading, error } = useSelector(
+    state => state.contacts.contacts
+  );
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
-
+  console.log(isLoading);
+  console.log(error);
   useEffect(() => {
     dispatch(getContactsThunk());
   }, [dispatch]);
@@ -37,6 +40,8 @@ export function Contacts() {
           </Item>
         ))}
       </List>
+      {isLoading && <h1>LOADING...</h1>}
+      {error && <h1>ERROR...</h1>}
     </>
   );
 }
