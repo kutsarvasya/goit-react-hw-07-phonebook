@@ -29,6 +29,8 @@ export function Form() {
     )
       ? alert(data.name + 'is already in contacts')
       : dispatch(addContactsThunk(data));
+    setName('');
+    setNumber('');
   };
 
   return (

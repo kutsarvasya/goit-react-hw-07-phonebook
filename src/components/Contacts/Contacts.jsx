@@ -10,10 +10,10 @@ export function Contacts() {
   const { items, isLoading, error } = useSelector(
     state => state.contacts.contacts
   );
+
   const filter = useSelector(state => state.contacts.filter);
   const dispatch = useDispatch();
-  console.log(isLoading);
-  console.log(error);
+
   useEffect(() => {
     dispatch(getContactsThunk());
   }, [dispatch]);
